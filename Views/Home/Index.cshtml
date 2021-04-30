@@ -1,0 +1,36 @@
+﻿@model GameOfLife.Models.Board
+@{
+    ViewData["Title"] = "Game of Life";
+}
+
+<h1>Game of Life</h1>
+
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger">Cell value should be either 0 or 1.</div>
+    <input asp-for="LengthX" type="hidden" />
+    <input asp-for="LengthY" type="hidden" />
+    <table class="board">
+        @for (int y = 0; y < Model.LengthY; y++)
+        {
+            <tr>
+                @for (int x = 0; x < Model.LengthX; x++)
+                {
+                    <td>
+                        <input asp-for="@Model.Cells[x][y].Value" class="cell form-control" />
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+    <input type="submit" value="Next Board" class="btn btn-primary" />
+</form>
+
+<hr />
+
+<partial name="_SetBoardSizePartial" model="new BoardSizeViewModel { LenX = Model.LengthX, LenY = Model.LengthY }" />
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
